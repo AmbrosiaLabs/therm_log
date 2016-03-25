@@ -6,6 +6,7 @@ defmodule ThermLog.Worker do
   end
 
   def init(_channel) do
+    :pg2.start
     :pg2.create(:thermex_measurements)
     :pg2.join(:thermex_measurements, self)
     {:ok, nil}
