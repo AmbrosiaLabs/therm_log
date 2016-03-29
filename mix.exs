@@ -31,7 +31,8 @@ defmodule ThermLog.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      # {:thermex, "~> 0.0.1"}
+      {:thermex, "~> 0.0.1"},
+      {:sqlitex, "~> 1.0.0"}
     ]
   end
 end

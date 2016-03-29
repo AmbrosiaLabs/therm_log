@@ -1,0 +1,4 @@
+%{"decimal": {:hex, :decimal, "1.1.1"},
+  "esqlite": {:hex, :esqlite, "0.2.2"},
+  "sqlitex": {:hex, :sqlitex, "1.0.0"},
+  "thermex": {:hex, :thermex, "0.0.1"}}

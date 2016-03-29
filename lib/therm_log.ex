@@ -5,7 +5,8 @@ defmodule ThermLog do
     import Supervisor.Spec, warn: false
 
     children = [
-      worker(ThermLog.Worker, []),
+      worker(Sqlitex.Server, [Application.get_env(:therm_log, :dbname), [name: Sqlitex.Server]]),
+      worker(ThermLog.Worker, [])
     ]
 
     opts = [strategy: :one_for_one, name: ThermLog.Supervisor]
