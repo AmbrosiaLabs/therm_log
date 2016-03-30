@@ -1,2 +1,3 @@
-config :therm_log, 
-  :dbname, "./db/dev/therm_log.sqlite3"
+use Mix.Config
+
+config :therm_log, :dbname, "./db/dev/therm_log.sqlite3"
