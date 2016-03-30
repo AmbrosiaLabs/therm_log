@@ -16,13 +16,8 @@ defmodule ThermLog.Worker do
 
   defp initialize_channel do
     Logger.info "initialize_channel"
-    case :pg2.start do
-      {:ok, _} -> Logger.info "pg2.start OK"
-      {:error, _} -> Logger.info "pg2.start failed"
-      _ -> Logger.info "pg2?"
-    end
     :pg2.create(:thermex_measurements)
-    :pg2.join(:thermex_measurements, self)
+    :pg2.join(:thermex_measurements, self())
   end
 
   defp initialize_database do
