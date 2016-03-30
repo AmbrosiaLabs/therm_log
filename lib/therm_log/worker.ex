@@ -1,9 +1,10 @@
-require IEx
+require Logger
 
 defmodule ThermLog.Worker do
   use GenServer
 
   def start_link() do
+    Logger.info "Starting ThermLog.Worker"
     GenServer.start_link(__MODULE__, [])
   end
 
@@ -14,20 +15,28 @@ defmodule ThermLog.Worker do
   end
 
   defp initialize_channel do
-    :pg2.start
+    Logger.info "initialize_channel"
+    case :pg2.start do
+      {:ok, _} -> Logger.info "pg2.start OK"
+      {:error, _} -> Logger.info "pg2.start failed"
+      _ -> Logger.info "pg2?"
+    end
     :pg2.create(:thermex_measurements)
     :pg2.join(:thermex_measurements, self)
   end
 
   defp initialize_database do
+    Logger.info "initialize_database"
     case Sqlitex.Server.query(Sqlitex.Server, "CREATE TABLE IF NOT EXISTS temperature_readings(id INTEGER PRIMARY KEY AUTOINCREMENT, serial_number CHAR(20), temperature INTEGER, timestamp INTEGER)") do
-      {:ok, results} -> IO.puts results
-      {:error, reason} -> IO.puts reason
+      {:ok, results} -> Logger.info "OK: #{results}"
+      {:error, reason} -> Logger.info "ERROR: #{reason}"
+      _ -> Logger.info "Default case"
     end
   end
 
   def handle_info({serial, temperature, timestamp}, state) do
-    IO.inspect { serial, temperature, timestamp }
+    Logger.info "handle_info"
+    Logger.info { serial, temperature, timestamp }
     case store_temperature(serial, temperature, timestamp) do
       {:ok, _result} -> IO.puts "Data Saved"
       {:error, result} -> IO.puts "Unable to save data: #{result}"
